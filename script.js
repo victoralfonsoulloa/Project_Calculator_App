@@ -21,7 +21,10 @@ function buttonClick(event) {
         addValue(value);
         break;
       case 'clear':
-        console.log('test');
+        clear();
+        break;
+      case 'backspace':
+        backspace();
         break;
     }
 
@@ -35,10 +38,19 @@ function buttonClick(event) {
   function addValue(value) {
     //Add value to the expression 
     expression += value;
-    console.log(expression)
+    //console.log(expression)
   }
 
   function updateDisplay(expression, rsult) {
     expressionDiv.textContent = expression;
     resultDiv.textContent = result;
+  }
+
+  function clear() {
+    expression = ' ';
+    result = ' ';
+  }
+
+  function backspace() {
+    expression = expression.slice(0, -1)
   }

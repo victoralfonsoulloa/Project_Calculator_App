@@ -40,6 +40,9 @@ function buttonClick(event) {
     case 'submit':
       submit();
       break;
+    case 'negate':
+      negate();
+      break;
   }
 
   // Update display
@@ -83,6 +86,23 @@ function submit() {
 
 function evaluateExpression() {
   const evalResult = eval(expression);
-  //check if evalResult is NaN or infinite. If it is retunr a space 
-  return isNaN(evalResult) || !isFinite(evalResult) ? 'Error': evalResult < 1 ? parseFloat(evalResult.toFixed(10)): parseFloat(evalResult.toFixed(2));
+  //check if evalResult is NaN or infinite. If it is retunr a space
+  return isNaN(evalResult) || !isFinite(evalResult)
+    ? 'Error'
+    : evalResult < 1
+    ? parseFloat(evalResult.toFixed(10))
+    : parseFloat(evalResult.toFixed(2));
+}
+
+function negate() {
+  //Negate the result if expression is empty and result is present
+  if (expression === '' && result !== '') {
+    result = -result;
+    //Toggle the sign of the expression if the expression is not already negative and it's not empty
+  } else if (expression.startsWith('-') && expression !== '') {
+    expression = '-' + expression;
+    //remove the negative sing from the expression if it's already negative.
+  } else if (expression.startsWith('-')) {
+    expression = expression.slice(1);
+  }
 }

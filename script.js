@@ -31,7 +31,15 @@ function buttonClick(event) {
     case 'subtraction':
     case 'multiplication':
     case 'division':
-    
+      if (expression == '' && result !== '') {
+        startFromResult(value);
+      } else if (expression !== ' ' && !isLastCharOperator()) {
+        addValue(value);
+      }
+      break;
+    case 'submit':
+      submit();
+      break;
   }
 
   // Update display
@@ -58,4 +66,23 @@ function clear() {
 
 function backspace() {
   expression = expression.slice(0, -1);
+}
+
+function isLastCharOperator() {
+  return isNaN(parseInt(expression.slice(-1)));
+}
+
+function startFromResult(value) {
+  expression += result + value;
+}
+
+function submit() {
+  result = evaluateExpression();
+  expression = '';
+}
+
+function evaluateExpression() {
+  const evalResult = eval(expression);
+  //check if evalResult is NaN or infinite. If it is retunr a space 
+  return isNaN(evalResult) || !isFinite(evalResult) ? 'Error': evalResult < 1 ? parseFloat(evalResult.toFixed(10)): parseFloat(evalResult.toFixed(2));
 }

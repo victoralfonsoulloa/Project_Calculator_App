@@ -43,6 +43,9 @@ function buttonClick(event) {
     case 'negate':
       negate();
       break;
+    case 'mod':
+      percentage();
+      break;
   }
 
   // Update display
@@ -99,10 +102,26 @@ function negate() {
   if (expression === '' && result !== '') {
     result = -result;
     //Toggle the sign of the expression if the expression is not already negative and it's not empty
-  } else if (expression.startsWith('-') && expression !== '') {
+  } else if (!expression.startsWith('-') && expression !== '') {
     expression = '-' + expression;
-    //remove the negative sing from the expression if it's already negative.
+    //remove the negative sign from the expression if it's already negative.
   } else if (expression.startsWith('-')) {
     expression = expression.slice(1);
+  }
+}
+
+function percentage() {
+  //Evaluate the expression, else it will take the percentage of only the first number
+  if (expression !== '') {
+    result = evaluateExpression()
+    expression = '';
+    if (!isNaN(result) && isFinite(result)) {
+      result /= 100;
+    } else {
+      result = '';
+    }
+  } else if (result !== '') {
+    //If expression is empty but result exists, divide by 100
+    result = parseFloat(result) / 100;
   }
 }

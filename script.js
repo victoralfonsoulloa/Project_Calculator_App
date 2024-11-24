@@ -46,6 +46,9 @@ function buttonClick(event) {
     case 'mod':
       percentage();
       break;
+      case 'decimal':
+        decimal(value);
+        break;
   }
 
   // Update display
@@ -55,9 +58,25 @@ function buttonClick(event) {
 inputBox.addEventListener('click', buttonClick);
 
 function addValue(value) {
-  // Add value to the expression
-  expression += value;
-  //console.log(expression)
+  if (value == '.') {
+    //find the last index of the last operator in the expression
+    const lastOperatorIndex = expression.search(/[+\-*/]/);
+    //find the last index of the last decima in the expression
+    const lastDecimalIndex = expression.lastIndexOf('.');
+    //find index of the last number  in the expression
+    const lastNumberIndex = Math.max(
+      expression.lastIndexOf('+'),
+      expression.lastIndexOf('-'),
+      expression.lastIndexOf('*'),
+      expression.lastIndexOf('/')
+    );
+    //Check if this is the first decimal in the current number or the expresion is empty
+    if (lastDecimalIndex < lastOperatorIndex || lastDecimalIndex < lastNumberIndex || lastDecimalIndex == -1 && (expression == '' || expression.slice(lastNumberIndex + 1).indexOf('-') == -1)) {
+      expression += value;
+    }
+  } else {
+    expression += value;
+  }
 }
 
 function updateDisplay(expression, result) {
@@ -124,4 +143,10 @@ function percentage() {
     //If expression is empty but result exists, divide by 100
     result = parseFloat(result) / 100;
   }
+}
+
+function decimal(value) {
+  if (!expression.endsWith('.') && !isNaN(expression.slice(-1))) {
+    addValue(value);
+  } 
 }
